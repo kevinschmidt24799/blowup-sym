@@ -3,13 +3,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy as sp
 
-n = 14
+n = 12
 symmetry_order = 3
 coset_size = 4
-fixed_points = 2
+fixed_points = 0
 assert n == symmetry_order*coset_size+fixed_points
 
-import symmetric_matrix_iterator
 
 atlas = nx.graph_atlas_g()
 
@@ -20,8 +19,11 @@ def get_symmetrical_matrices(size):
 
 def get_matrices(rows, columns):
     total_cells = rows * columns
-    matrices = []
 
+    if total_cells == 0:
+        return [np.matrix([]).reshape(rows,columns)]
+
+    matrices = []
     for i in range(2 ** total_cells):
         binary_str = format(i, f'0{total_cells}b')
         matrix = np.array([int(bit) for bit in binary_str]).reshape(rows, columns)
