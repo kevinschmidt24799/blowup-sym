@@ -24,8 +24,6 @@ def get_matrices(rows, columns):
 
 
 def get_matrix_transposed_sum(size):
-    matrices = []
-
     # Number of diagonal elements
     diagonal_elements = size
     # Number of upper triangle elements (excluding diagonal)
@@ -51,6 +49,13 @@ def get_matrix_transposed_sum(size):
                     matrix[j, i] = value  # Make symmetric
                     upper_combo_temp //= 3
 
-            matrices.append(matrix)
+            yield matrix
 
-    return matrices
+
+def get_matrix_transposed_sum_count(size):
+    # Number of diagonal elements
+    diagonal_elements = size
+    # Number of upper triangle elements (excluding diagonal)
+    upper_triangle_elements = size * (size - 1) // 2
+
+    return (2 ** diagonal_elements) * (3 ** upper_triangle_elements)

@@ -21,15 +21,15 @@ class ProgressTracker:
             print(f"Progress: {self.count:,}/{self.total:,} ({100*self.count/self.total:.1f}%) - Est. {hours}h {minutes}m remaining")
 
 
-def find_max_third_eigenvalue(A_list, B_transposed_sum_list):
+def find_max_third_eigenvalue(A_list, n, total_B_count):
     max_third_eigen_value = float('-inf')
     max_M = None
 
-    total = len(A_list) * len(B_transposed_sum_list)
+    total = len(A_list) * total_B_count
     progress = ProgressTracker(total)
 
     for A in A_list:
-        for B_t_sum in B_transposed_sum_list:
+        for B_t_sum in get_matrix_transposed_sum(n):
             M = A + B_t_sum
             eigenvalues = np.linalg.eigvals(M).real
             eigenvalues = np.sort(eigenvalues)[::-1]
@@ -50,9 +50,13 @@ def spectrum_m1(n):
     assert n >= 3
 
     A_list = get_symmetrical_matrices(n)
-    B_transposed_sum_list = get_matrix_transposed_sum(n)
+    B_count = get_matrix_transposed_sum_count(n)
 
-    max_third_eigen_value, max_M = find_max_third_eigenvalue(A_list, B_transposed_sum_list)
+    max_third_eigen_value, max_M = find_max_third_eigenvalue(
+        A_list,
+        n,
+        B_count
+    )
 
     print(f"Final max third eigenvalue: {max_third_eigen_value}")
     print("Final max matrix:")
