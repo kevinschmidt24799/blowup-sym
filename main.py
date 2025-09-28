@@ -3,10 +3,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy as sp
 
-n = 12
+n = 16
 symmetry_order = 3
-coset_size = 4
-fixed_points = 0
+coset_size = 5
+fixed_points = 1
 assert n == symmetry_order*coset_size+fixed_points
 
 
@@ -44,6 +44,7 @@ def main():
 
     count = 0
     max_third_eigenvalue = float('-inf')
+    max_adj = None
 
     list_coset_self = get_symmetrical_matrices(coset_size)
     list_coset_plus1 = get_matrices(coset_size, coset_size)
@@ -51,6 +52,7 @@ def main():
     list_fixed_self = get_symmetrical_matrices(fixed_points)
 
     expected_count = len(list_coset_self) * len(list_coset_plus1) * len(list_coset_to_fixed) * len(list_fixed_self)
+    print("expected count:", expected_count)
 
     for coset_self in list_coset_self:
         for coset_plus1 in list_coset_plus1:
@@ -76,6 +78,7 @@ def main():
                         # Check if this is a new maximum
                         if third_eigenvalue > max_third_eigenvalue:
                             max_third_eigenvalue = third_eigenvalue
+                            max_adj = adj
 
                             print(f"\nNew maximum 3rd eigenvalue found: {max_third_eigenvalue:.6f}")
                             print("Adjacency matrix:")
@@ -93,10 +96,8 @@ def main():
 
     print(f"\nTotal matrices processed: {count}/{expected_count}")
     print(f"Final maximal 3rd largest eigenvalue: {max_third_eigenvalue:.6f}")
-
-
-
-
+    print("Adjacency matrix:")
+    print(max_adj.astype(int))
 
 if __name__ == "__main__":
     main()
